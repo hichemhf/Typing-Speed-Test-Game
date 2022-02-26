@@ -16,6 +16,7 @@ body {
 .container {
   margin: auto;
   max-width: 900px;
+  padding-inline: 0.3rem;
 }
 .name {
   background-color: var(--main-color);
@@ -50,6 +51,7 @@ body {
   color: white;
   padding: 20px;
   cursor: pointer;
+  border-radius: 6px;
 }
 .the-word {
   text-align: center;
@@ -64,7 +66,7 @@ body {
   display: block;
   padding: 15px;
   border: 3px solid var(--main-color);
-  font-size: 20px;
+  font-size: 1.6rem;
   text-align: center;
   text-transform: capitalize;
   border-radius: 6px;
@@ -80,6 +82,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  border-radius: 6px;
 }
 .upcoming-words div {
   background-color: var(--main-color);
@@ -94,6 +97,7 @@ body {
   justify-content: space-between;
   background-color: white;
   padding: 15px;
+  border-radius: 6px;
 }
 .control span {
   font-weight: bold;
