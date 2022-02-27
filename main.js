@@ -70,7 +70,7 @@ const lvls = {
   Hard: 2,
 };
 // Default Level
-let defaultLevelName = "Easy"; // Change Level From Here
+let defaultLevelName = "Normal"; // Change Level From Here
 let defaultLevelSeconds = lvls[defaultLevelName];
 
 // Catch Selectors
@@ -87,16 +87,50 @@ let finishMessage = document.querySelector(".finish");
 
 // Setting Level Name + Seconds + Score
 lvlNameSpan.innerText = defaultLevelName;
-secondsSpan.innerTexts = defaultLevelSeconds;
-timeLeftSpan.innerText = defaultLevelSeconds;
+secondsSpan.innerText = timeLeftSpan.innerText = defaultLevelSeconds;
 scoreTotal.innerText = words.length;
+// secondsSpan.innerText = defaultLevelSeconds;
+// timeLeftSpan.innerText = defaultLevelSeconds;
 
-// Disable Paste Event
-input.onpaste = function () {
-  return false;
+//Choose Level
+
+const onLevelChange = (level) => {
+  defaultLevelName = level;
+  defaultLevelSeconds = lvls[level];
+  lvlNameSpan.innerText = level;
+  secondsSpan.innerText = timeLeftSpan.innerText = defaultLevelSeconds;
 };
 
+lvlNameSpan.addEventListener("click", (e) => {
+  let i = 0;
+  let lvlbcp = Object.keys(lvls)[0];
+
+  for (const lvl in lvls) {
+    if (Object.hasOwnProperty.call(lvls, lvl)) {
+      if (lvl === defaultLevelName) {
+        i++;
+      } else if (i === 1) {
+        lvlbcp = lvl;
+        break;
+      }
+    }
+  }
+  onLevelChange(lvlbcp);
+});
+
+// Disable Paste Event
+
+// input.onpaste = e => {
+//   e.preventDefault();
+//   return false;
+// };
+
+input.addEventListener("paste", (e) => e.preventDefault());
+
 // Start Game
+// startButton.addEventListener("click",console.log("hi"))
+// startButton.addEventListener("click",console.log("hello"))
+
 startButton.onclick = function () {
   this.remove();
   input.focus();
