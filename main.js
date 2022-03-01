@@ -74,6 +74,8 @@ const lvls = {
 let defaultLevelName = "Normal"; // Change Level From Here
 let defaultLevelSeconds = lvls[defaultLevelName];
 
+let start = null;
+
 //* Catch Selectors
 let startButton = document.querySelector(".start");
 let lvlNameSpan = document.querySelector(".message .lvl");
@@ -170,7 +172,7 @@ function genWords() {
 }
 function startPlay() {
   timeLeftSpan.innerText = defaultLevelSeconds;
-  let start = setInterval(() => {
+  start = setInterval(() => {
     timeLeftSpan.innerText--;
     if (timeLeftSpan.innerText === "0") {
       // Stop Timer
@@ -201,6 +203,8 @@ function startPlay() {
 
 //* reset
 reset.addEventListener("click", (e) => {
+  clearInterval(start);
+
   // words.splice(0, words.length);
   words.splice(0);
 
