@@ -139,8 +139,12 @@ startButton.onclick = function () {
   this.hidden = true;
   input.focus();
   // Generate Word Function
-  genWords();
+  gameLaunch();
 };
+
+function gameLaunch() {
+  genWords();
+}
 
 function genWords() {
   // Get Random Word From Array
