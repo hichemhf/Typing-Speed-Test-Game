@@ -28,8 +28,8 @@
   ---- [06] Add 3 Seconds For The First Word
 */
 
-// Array Of Words
-const words = [
+//* Array Of Words
+const listOfAllWords = [
   "Hello",
   "Town",
   "Code",
@@ -62,18 +62,19 @@ const words = [
   "Rust",
   "Playing", */
 ];
+const words = [...listOfAllWords];
 
-// Setting Levels
+//* Setting Levels
 const lvls = {
   Easy: 5,
   Normal: 3,
   Hard: 2,
 };
-// Default Level
+//* Default Level
 let defaultLevelName = "Normal"; // Change Level From Here
 let defaultLevelSeconds = lvls[defaultLevelName];
 
-// Catch Selectors
+//* Catch Selectors
 let startButton = document.querySelector(".start");
 let lvlNameSpan = document.querySelector(".message .lvl");
 let secondsSpan = document.querySelector(".message .seconds");
@@ -84,15 +85,16 @@ let timeLeftSpan = document.querySelector(".time span");
 let scoreGot = document.querySelector(".score .got");
 let scoreTotal = document.querySelector(".score .total");
 let finishMessage = document.querySelector(".finish");
+let reset = document.querySelector(".reset");
 
-// Setting Level Name + Seconds + Score
+//* Setting Level Name + Seconds + Score
 lvlNameSpan.innerText = defaultLevelName;
 secondsSpan.innerText = timeLeftSpan.innerText = defaultLevelSeconds;
 scoreTotal.innerText = words.length;
 // secondsSpan.innerText = defaultLevelSeconds;
 // timeLeftSpan.innerText = defaultLevelSeconds;
 
-//Choose Level
+//*Choose Level
 
 const onLevelChange = (level) => {
   defaultLevelName = level;
@@ -118,7 +120,7 @@ lvlNameSpan.addEventListener("click", (e) => {
   onLevelChange(lvlbcp);
 });
 
-// Disable Paste Event
+//* Disable Paste Event
 
 // input.onpaste = e => {
 //   e.preventDefault();
@@ -127,12 +129,12 @@ lvlNameSpan.addEventListener("click", (e) => {
 
 input.addEventListener("paste", (e) => e.preventDefault());
 
-// Start Game
+//* Start Game
 // startButton.addEventListener("click",console.log("hi"))
 // startButton.addEventListener("click",console.log("hello"))
 
 startButton.onclick = function () {
-  this.remove();
+  this.hidden = true;
   input.focus();
   // Generate Word Function
   genWords();
@@ -146,9 +148,11 @@ function genWords() {
   // Remove WordFrom Array
   words.splice(wordIndex, 1);
   // Show The Random Word
-  theWord.innerHTML = randomWord;
+  theWord.innerText = randomWord;
   // Empty Upcoming Words
+  removeAllChildNodes(upcomingWords);
   upcomingWords.innerText = "";
+
   // Generate Words
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < words.length; i++) {
@@ -171,14 +175,10 @@ function startPlay() {
     if (timeLeftSpan.innerText === "0") {
       // Stop Timer
       clearInterval(start);
-      // Compare Words
-      if (theWord.innerHTML.toLowerCase() === input.value.toLowerCase()) {
-        // Empty Input Field
+      if (theWord.innerText.toLowerCase() === input.value.toLowerCase()) {
         input.value = "";
-        // Increase Score
-        scoreGot.innerHTML++;
+        scoreGot.innerText++;
         if (words.length > 0) {
-          // Call Generate Word Function
           genWords();
         } else {
           let span = document.createElement("span");
@@ -186,8 +186,7 @@ function startPlay() {
           let spanText = document.createTextNode("Congratz");
           span.appendChild(spanText);
           finishMessage.appendChild(span);
-          // Remove Upcoming Words Box
-          upcomingWords.remove();
+          upcomingWords.hidden = true;
         }
       } else {
         let span = document.createElement("span");
@@ -199,3 +198,32 @@ function startPlay() {
     }
   }, 1000);
 }
+
+//* reset
+reset.addEventListener("click", (e) => {
+  // words.splice(0, words.length);
+  words.splice(0);
+
+  words.push(...listOfAllWords);
+  //Array.prototype.push.apply(words, listOfAllWords);
+  // words.push.apply(words, listOfAllWords);
+
+  input.value = "";
+
+  onLevelChange(defaultLevelName);
+
+  scoreGot.innerText = 0;
+  startButton.hidden = false;
+  theWord.innerText = "";
+  // finishMessage.innerText = "";
+  removeAllChildNodes(finishMessage);
+  removeAllChildNodes(upcomingWords);
+  upcomingWords.innerText = "Words Will Show Here";
+  upcomingWords.hidden = false;
+});
+
+const removeAllChildNodes = (parent) => {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+};
