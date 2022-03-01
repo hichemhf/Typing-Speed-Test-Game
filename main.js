@@ -74,7 +74,13 @@ const lvls = {
 let defaultLevelName = "Normal"; // Change Level From Here
 let defaultLevelSeconds = lvls[defaultLevelName];
 
+//* other settings
 let start = null;
+const result = {
+  winner: "good",
+  loser: "bad",
+  /* result: className */
+};
 
 //* Catch Selectors
 let startButton = document.querySelector(".start");
@@ -144,6 +150,11 @@ startButton.onclick = function () {
 
 function gameLaunch() {
   genWords();
+  // reset time left
+  timeLeftSpan.innerText = defaultLevelSeconds;
+
+  // Call Start Play Function
+  start = setInterval(startPlay, 1000);
 }
 
 function genWords() {
@@ -170,39 +181,37 @@ function genWords() {
   }
 
   upcomingWords.append(fragment);
-
-  // Call Start Play Function
-  startPlay();
 }
 function startPlay() {
-  timeLeftSpan.innerText = defaultLevelSeconds;
-  start = setInterval(() => {
-    timeLeftSpan.innerText--;
-    if (timeLeftSpan.innerText === "0") {
-      // Stop Timer
-      clearInterval(start);
-      if (theWord.innerText.toLowerCase() === input.value.toLowerCase()) {
-        input.value = "";
-        scoreGot.innerText++;
-        if (words.length > 0) {
-          genWords();
-        } else {
-          let span = document.createElement("span");
-          span.className = "good";
-          let spanText = document.createTextNode("Congratz");
-          span.appendChild(spanText);
-          finishMessage.appendChild(span);
-          upcomingWords.hidden = true;
-        }
+  timeLeftSpan.innerText--;
+  if (
+    timeLeftSpan.innerText === "0" ||
+    theWord.innerText.toLowerCase() === input.value.toLowerCase()
+  ) {
+    // Stop Timer
+    clearInterval(start);
+    if (theWord.innerText.toLowerCase() === input.value.toLowerCase()) {
+      input.value = "";
+      scoreGot.innerText++;
+      if (words.length > 0) {
+        gameLaunch();
       } else {
-        let span = document.createElement("span");
-        span.className = "bad";
-        let spanText = document.createTextNode("Game Over");
-        span.appendChild(spanText);
-        finishMessage.appendChild(span);
+        showFinishMessage(result.winner, "Congratz");
+        upcomingWords.hidden = true;
       }
+    } else {
+      showFinishMessage(result.loser, "Game Over");
     }
-  }, 1000);
+  }
+}
+
+function showFinishMessage(resultClassName, msg) {
+  let span = document.createElement("span");
+  //resultClassName = good or bad
+  span.className = resultClassName;
+  let spanText = document.createTextNode(msg);
+  span.appendChild(spanText);
+  finishMessage.appendChild(span);
 }
 
 //* reset
