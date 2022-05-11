@@ -1,4 +1,4 @@
-# TypingSpeedTestGame-Elzero
+# Typing-Speed-Test-Game
 
 ## Some Screenshots
 
